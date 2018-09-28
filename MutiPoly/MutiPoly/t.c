@@ -12,7 +12,6 @@ typedef struct Atom//多项式的某一项的某一字母元素与其指数
 typedef struct PNode//多项式中的一项
 {
 	double a;//系数
-	//char *Atomstr;//除去指数部分的字符串
 	pAtomList Atoms;//未知数指数集合
 	struct PNode *next;
 }PNode,*PList;
@@ -69,23 +68,7 @@ int InsertAtomList(pAtomList AtomList,char x,int b)
 		AtomList->next = tAtomIns;//头插入
 	}
 	AtomList->b += b;//更新头节点总次幂
-/*	if (PolyNode)
-	{
-		ptr = PolyNode->Atoms->next;
-		while (ptr)
-		{
-			if (ptr->b)
-			{
-				str[0] = ptr->x;
-				str[1] = 0;
-				strcat(tstr,str);
-				strcat(tstr,itoa(ptr->b,str,10));
-			}
-			ptr = ptr->next;
-		}
-		tstr = (char*)realloc(tstr,(strlen(tstr)+1)*sizeof(char));
-		PolyNode->Atomstr = tstr;
-	}*/
+
 	return 0;
 }
 pAtomList CreateAtomList(char *Atomstr)
