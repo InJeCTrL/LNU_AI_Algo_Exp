@@ -323,7 +323,7 @@ int main(void)
 			break;
 		}
 	}
-	if (!timedout && !IsStackEmpty(S))//栈非空就退出，代表找到目标状态
+	if (!timedout)//找到目标状态
 	{
 		printf("Procedure(Reverse order):\n");
 		pTmp = S->next->MatrixNode;
@@ -333,13 +333,9 @@ int main(void)
 			pTmp = pTmp->parent;
 		}while(pTmp);
 	}
-	else if (!timedout && IsStackEmpty(S))//栈空，代表没有找到目标状态(无解)
+	else//代表没有找到目标状态(无解)
 	{
-		printf("Impossible!\n");
-	}
-	else//超时
-	{
-		printf("DFS - Timedout!\n");
+		printf("DFS - Timedout:Impossible!\n");
 	}
 	DestroyStack(S);//摧毁栈
 	FreeStatusNodes(tNode_Begin);//摧毁所有状态节点

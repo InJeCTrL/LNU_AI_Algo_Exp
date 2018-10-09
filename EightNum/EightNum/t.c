@@ -262,6 +262,8 @@ int main(void)
 	Queue *Q = NULL;
 	pNode tNode_Begin = NULL,tNode_End = NULL;//初始状态与目标状态
 	pNode pTmp = NULL;//中间状态
+	long Time1,Time2;//记录运行时间
+	int timedout = 0;//超时标志
 	int i;//遍历子状态的游标
 	int Get = 0;//找到最终状态的标志
 	char Stastr[11] = {0};//临时保存输入的状态
@@ -295,9 +297,16 @@ int main(void)
 		ShowStatus(tNode_End);
 		printf("-------------------------------------\n");
 	}
-
+	Time1 = GetTickCount();
 	while (!IsQueueEmpty(Q))
 	{
+		Time2 = GetTickCount();
+		if (Time2 - Time1 > 30000)
+		{
+			timedout = 1;
+			break;
+		}
+
 		if (IsSameStatus(Q->Head->MatrixNode,tNode_End))
 		{
 			Get = 1;
@@ -320,7 +329,7 @@ int main(void)
 			break;
 		PullQueue(Q);//当前的状态节点出队
 	}
-	if (!IsQueueEmpty(Q))//队列非空就退出，代表找到目标状态
+	if (!timedout)//未超时则找到目标状态
 	{
 		printf("Procedure(Reverse order):\n");
 		pTmp = Q->Head->MatrixNode;
@@ -330,7 +339,7 @@ int main(void)
 			pTmp = pTmp->parent;
 		}while(pTmp);
 	}
-	else//队列空，代表没有找到目标状态(无解)
+	else//超时，代表没有找到目标状态(无解)
 	{
 		printf("Impossible!\n");
 	}
