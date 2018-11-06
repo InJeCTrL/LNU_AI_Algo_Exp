@@ -1,1 +1,9 @@
-﻿
+﻿  t.c
+d:\code trunk\schoolhw\ai_algo_exp\geneticalgo\geneticalgo\t.c(22): warning C4013: “Fitness”未定义；假设外部返回 int
+d:\code trunk\schoolhw\ai_algo_exp\geneticalgo\geneticalgo\t.c(27): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+d:\code trunk\schoolhw\ai_algo_exp\geneticalgo\geneticalgo\t.c(18): warning C4101: “j”: 未引用的局部变量
+d:\code trunk\schoolhw\ai_algo_exp\geneticalgo\geneticalgo\t.c(60): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+d:\code trunk\schoolhw\ai_algo_exp\geneticalgo\geneticalgo\t.c(142): warning C4142: 类型的良性重定义
+d:\code trunk\schoolhw\ai_algo_exp\geneticalgo\geneticalgo\t.c(282): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          d:\visual studio 2012\vc\include\stdio.h(290) : 参见“scanf”的声明
+  GeneticAlgo.vcxproj -> D:\Code Trunk\SchoolHW\AI_Algo_Exp\GeneticAlgo\Debug\GeneticAlgo.exe
