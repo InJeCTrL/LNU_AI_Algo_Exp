@@ -122,7 +122,7 @@ Pt Calc(GameStatus _G)
 							_G.Game[m][n] = method;//模拟用户落子
 							tG = G(_G);//计算评估值
 							if (maxG > tG)
-							{//取最大评估值的棋局
+							{//与节点，取最小评估值
 								maxG = tG;
 							}
 							_G.Game[m][n] = 0;//恢复棋局，撤销用户临时落子
@@ -130,7 +130,7 @@ Pt Calc(GameStatus _G)
 					}
 				}
 				if (minG < maxG)
-				{//取最小评估值的棋局
+				{//或节点，取最大评估值的棋局
 					PT.x = i;
 					PT.y = j;
 					minG = maxG;
