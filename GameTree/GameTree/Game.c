@@ -27,19 +27,32 @@ int InitBlankGame(GameStatus **G)
 int GetLittleG(int Me,GameStatus G)
 {//获得单边评估值
 	int i,j;
+	int trank = 0;
 	int T = 0;
 	for (i=0,j=0;i<N && j<N;i++,j++)
 	{//左上到右下斜线
 		if (G.Game[i][j] == (Me == 1?2:1))
 			break;//发现此斜线上有用户落子
+		else if (G.Game[i][j] == Me)
+			trank++;
 	}
+	if (trank == N)//已成一线
+		return INT_MAX;
+	else
+		trank = 0;
 	if (i >= N)//此斜线累计
 		T++;
 	for (i=0,j=2;i<N && j>=0;i++,j--)
 	{//右上到左下斜线
 		if (G.Game[i][j] == (Me == 1?2:1))
 			break;//发现此斜线上有用户落子
+		else if (G.Game[i][j] == Me)
+			trank++;
 	}
+	if (trank == N)//已成一线
+		return INT_MAX;
+	else
+		trank = 0;
 	if (j < 0)//此斜线累计
 		T++;
 	for (i=0;i<N;i++)
@@ -48,7 +61,13 @@ int GetLittleG(int Me,GameStatus G)
 		{
 			if (G.Game[i][j] == (Me == 1?2:1))
 				break;
+			else if (G.Game[i][j] == Me)
+				trank++;
 		}
+		if (trank == N)//已成一线
+			return INT_MAX;
+		else
+			trank = 0;
 		if (j >= N)
 			T++;
 	}
@@ -58,7 +77,13 @@ int GetLittleG(int Me,GameStatus G)
 		{
 			if (G.Game[j][i] == (Me == 1?2:1))
 				break;
+			else if (G.Game[j][i] == Me)
+				trank++;
 		}
+		if (trank == N)//已成一线
+			return INT_MAX;
+		else
+			trank = 0;
 		if (j >= N)
 			T++;
 	}
@@ -77,23 +102,40 @@ int G(GameStatus G)
 }
 Pt Calc(GameStatus _G)
 {//计算下一个应落子位置
-	int i,j;
+	int i,j,m,n;
 	Pt PT = {0,0};
-	int maxG = INT_MIN,tG = 0;
+	int maxG = INT_MAX,tG = 0,minG = INT_MIN;
 	for (i=0;i<N;i++)
 	{
 		for (j=0;j<N;j++)
 		{
 			if (_G.Game[i][j] == 0)//为0代表未落子
 			{
-				_G.Game[i][j] = (method == 1)?2:1;//模拟落子
-				tG = G(_G);//计算评估值
-				if (maxG < tG)
-				{//取最大评估值的棋局
+				_G.Game[i][j] = (method == 1)?2:1;//模拟机器落子
+				maxG = INT_MAX;
+				for (m=0;m<N;m++)
+				{
+					for (n=0;n<N;n++)
+					{
+						if (_G.Game[m][n] == 0)//为0代表未落子
+						{
+							_G.Game[m][n] = method;//模拟用户落子
+							tG = G(_G);//计算评估值
+							if (maxG > tG)
+							{//取最大评估值的棋局
+								maxG = tG;
+							}
+							_G.Game[m][n] = 0;//恢复棋局，撤销用户临时落子
+						}
+					}
+				}
+				if (minG < maxG)
+				{//取最小评估值的棋局
 					PT.x = i;
 					PT.y = j;
-					maxG = tG;
+					minG = maxG;
 				}
+				_G.Game[i][j] = 0;//恢复棋局，撤销机器临时落子
 			}
 		}
 	}
@@ -209,9 +251,9 @@ int WinOrLose(GameStatus G)
 		}
 		user = 0;
 	}
-	for (i=0;i<N;i++)
+	for (j=0;j<N;j++)
 	{//竖列扫描
-		for (j=0;j<N;j++)
+		for (i=0;i<N;i++)
 		{
 			if (!G.Game[i][j])
 			{
@@ -227,7 +269,7 @@ int WinOrLose(GameStatus G)
 		}
 		else
 		{
-			if (user == N)//此横行黑子胜利
+			if (user == N)//此竖列黑子胜利
 				return 1;
 			else if (user == 0)
 				return 2;
